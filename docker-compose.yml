@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ${VOLUME_PATH}/mysql57/storage:/var/lib/mysql
+      - ${VOLUME_PATH}/mysql57/config:/etc/mysql/conf.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+  mongodb:
+    image: mongo
+    volumes:
+      - ${VOLUME_PATH}/mongodb/mongo:/etc/mongo
+      - ${VOLUME_PATH}/mongodb/mongo:/data/db
+  jupyter:
+    build:
+      context: .
+      args:
+        - password=${PASSWORD}
+    volumes:
+      - ${VOLUME_PATH}/notebook/:/notebook/
+    ports:
+      - "${PORT}:8888"

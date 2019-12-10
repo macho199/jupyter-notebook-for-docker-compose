@@ -5,6 +5,14 @@ ARG password
 RUN apt-get update && apt-get install -y \
     libxml2-dev libxslt-dev libpython3-dev zlib1g-dev
 
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list
+RUN apt-get update
+RUN apt-get install -y google-chrome-stable
+
+WORKDIR /usr/local/bin
+RUN wget https://chromedriver.storage.googleapis.com/78.0.3904.105/chromedriver_linux64.zip && unzip chromedriver_linux64.zip
+
 WORKDIR /notebook
 RUN pip install --upgrade pip
 #RUN pip install jupyter requests lxml cssselect beautifulsoup4 pyquery mysqlclient pymongo openpyxl pandas matplotlib selenium

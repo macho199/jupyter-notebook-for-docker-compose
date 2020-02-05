@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.7
 
 ARG password
 
@@ -19,6 +19,23 @@ RUN pip install --upgrade pip
 # jupyter requests lxml cssselect beautifulsoup4 pyquery mysqlclient pymongo openpyxl pandas matplotlib selenium
 COPY requirements.txt /notebook
 RUN pip install -r requirements.txt
+
+
+RUN apt-get install -y nodejs npm
+RUN npm install -g --unsafe-perm ijavascript && ijsinstall
+
+
+RUN apt-get install -y php php-zmq
+ADD ./jupyter-php-installer.phar /notebook/jupyter-php-installer.phar
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php -r "if (hash_file('sha384', 'composer-setup.php') === 'c5b9b6d368201a9db6f74e2611495f369991b72d9c8cbd3ffbc63edff210eb73d46ffbfce88669ad33695ef77dc76976') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+RUN php composer-setup.php
+RUN php -r "unlink('composer-setup.php');"
+#RUN composer global require Litipk/Jupyter-PHP
+
+RUN php ./jupyter-php-installer.phar install
+
 
 RUN jupyter notebook --generate-config
 RUN echo "c.NotebookApp.ip = '0.0.0.0'" >> /root/.jupyter/jupyter_notebook_config.py

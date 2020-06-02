@@ -7,7 +7,20 @@ services:
       - ${VOLUME_PATH}/mysql57/storage:/var/lib/mysql
       - ${VOLUME_PATH}/mysql57/config:/etc/mysql/conf.d
     environment:
-      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - 3306:3306
+  postgresql:
+    image: postgres:12
+    volumes:
+      - ${VOLUME_PATH}/postgresql/data:/var/lib/postgresql/data 
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
   mongodb:
     image: mongo
     volumes:

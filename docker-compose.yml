@@ -8,9 +8,6 @@ services:
       - ${VOLUME_PATH}/mysql57/config:/etc/mysql/conf.d
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     ports:
       - 3306:3306
   postgresql:
@@ -30,8 +27,8 @@ services:
     build:
       context: .
       args:
-        - password=${PASSWORD}
+        - password=${JUPYTER_PASSWORD}
     volumes:
       - ${VOLUME_PATH}/notebook/:/notebook/
     ports:
-      - "${PORT}:8888"
+      - "${JUPYTER_PORT}:8888"

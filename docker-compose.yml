@@ -23,6 +23,8 @@ services:
     volumes:
       - ${VOLUME_PATH}/mongodb/mongo:/etc/mongo
       - ${VOLUME_PATH}/mongodb/mongo:/data/db
+  redis:
+    image: redis
   jupyter:
     build:
       context: .
